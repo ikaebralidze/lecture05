@@ -52,7 +52,7 @@ const getMovieCountry = function (movie) {
 getMovieCountry("one punch man");
 // --------------N4--------------
 
-const getJson = async function (url) {
+const getJson = function (url) {
   let num = "";
   return fetch(url)
     .then((res) => res.json())
