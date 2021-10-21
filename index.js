@@ -60,38 +60,27 @@ const getJson = async function (url) {
       [...x.Runtime].forEach((i) => {
         if (Number(i)) num += i;
       });
+
       return num;
     });
 };
 
-// const moviesTimeSum = function (movie1, movie2, movie3) {
-//   let sum = 0;
-//   getJson(`http://www.omdbapi.com/?t=${movie1}&apikey=9c23e035`).then((x) =>
-//     console.log(x)
-//   );
-//   getJson(`http://www.omdbapi.com/?t=${movie2}&apikey=9c23e035`).then((x) => {
-//     console.log(sum);
-//   });
-//   getJson(`http://www.omdbapi.com/?t=${movie3}&apikey=9c23e035`).then((x) =>
-//     Number(x)
-//   );
-//   console.log(sum);
-// };
-
-// ბოდიში ამ წაკითხვა რო გიწევს :D
-// მეტი იდეა არ მქონდა
-
 const moviesTimeSum = function (movie1, movie2, movie3) {
-  let sum = 0;
-  getJson(`http://www.omdbapi.com/?t=${movie1}&apikey=9c23e035`).then((x) => {
-    getJson(`http://www.omdbapi.com/?t=${movie2}&apikey=9c23e035`)
-      .then((y) => Number(y) + Number(x))
-      .then((z) => {
-        getJson(`http://www.omdbapi.com/?t=${movie3}&apikey=9c23e035`).then(
-          (t) => console.log(z + Number(t))
-        );
-      });
-  });
+  const promiis = Promise.all([
+    getJson(`http://www.omdbapi.com/?t=${movie1}&apikey=9c23e035`).then((y) =>
+      Number(y)
+    ),
+
+    getJson(`http://www.omdbapi.com/?t=${movie2}&apikey=9c23e035`).then((z) =>
+      Number(z)
+    ),
+
+    getJson(`http://www.omdbapi.com/?t=${movie3}&apikey=9c23e035`).then((x) =>
+      Number(x)
+    ),
+  ])
+    .then((x) => x.reduce((acc, curr) => (acc += curr)))
+    .then((x) => console.log(x));
 };
 
 moviesTimeSum("avatar", "madagascar", "one punch man");
